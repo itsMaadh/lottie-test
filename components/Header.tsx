@@ -27,6 +27,7 @@ export default function Header() {
       pathname: "/search",
       query: { q: e.target[0].value },
     });
+    e.target.reset();
   };
 
   return (
@@ -34,7 +35,7 @@ export default function Header() {
       <Disclosure as="nav" className="bg-gray-100">
         {({ open }) => (
           <>
-            <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8  font-lf-font">
+            <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
               <div className="relative flex items-center justify-between h-16">
                 <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                   {/* Mobile menu button*/}
@@ -81,14 +82,12 @@ export default function Header() {
                   </div>
                 </div>
                 {/*Search field*/}
-                <div className="absolute hidden md:block inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                  <form
-                    onSubmit={onSearch}
-                    className="outline-none rounded-full w-full border-0 md:p-3 pb-2 relative"
-                  >
+                <div className="hidden md:block">
+                  <form onSubmit={onSearch}>
                     <input
                       type="text"
-                      className="outline-none text-sm focus:bg-lf-teal focus:text-white focus:font-bold bg-purple-white rounded-lg shadow-sm w-full w-full border-0 p-3 pl-10"
+                      placeholder="Search"
+                      className="outline-none text-sm focus:bg-lf-teal focus:text-white focus:font-bold bg-purple-white rounded-lg shadow-sm w-full w-full border-0 p-2.5"
                     />
                   </form>
                 </div>
@@ -113,11 +112,12 @@ export default function Header() {
                   </Link>
                 ))}
                 {/*Search field*/}
-                <div>
+                <div className="outline-none bg-purple-white rounded-full w-full border-0 md:p-3 pb-2 relative">
                   <form onSubmit={onSearch}>
                     <input
                       type="text"
-                      className="outline-none text-sm focus:bg-lf-teal focus:text-white focus:font-bold bg-purple-white rounded-lg shadow-sm w-full w-full border-0 p-3 pl-10"
+                      placeholder="Search"
+                      className="outline-none text-sm focus:bg-lf-teal focus:text-white focus:font-bold bg-purple-white rounded-lg shadow-sm w-full w-full border-0 p-2.5"
                     />
                   </form>
                 </div>
