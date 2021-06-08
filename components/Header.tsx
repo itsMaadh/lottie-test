@@ -2,6 +2,7 @@ import { Disclosure } from "@headlessui/react";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import React from "react";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -9,6 +10,7 @@ function classNames(...classes) {
 
 export default function Header() {
   const router = useRouter();
+  // navigation items
   const navigation = [
     { name: "Home", href: "/" },
     {
@@ -18,8 +20,8 @@ export default function Header() {
     { name: "Recent", href: "/recent" },
   ];
 
-  const onSearch = async (e) => {
-    console.log(e);
+  // function called on search
+  const onSearch = async (e): Promise<void> => {
     e.preventDefault();
     await router.push({
       pathname: "/search",
@@ -29,10 +31,10 @@ export default function Header() {
 
   return (
     <div>
-      <Disclosure as="nav" className="bg-gray-800">
+      <Disclosure as="nav" className="bg-gray-100">
         {({ open }) => (
           <>
-            <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+            <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8  font-lf-font">
               <div className="relative flex items-center justify-between h-16">
                 <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                   {/* Mobile menu button*/}
@@ -49,25 +51,25 @@ export default function Header() {
                   <div className="flex-shrink-0 flex items-center">
                     <img
                       className="block lg:hidden h-8 w-auto"
-                      src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg"
+                      src="https://static.lottiefiles.com/static_uploads/lf_Symbol.svg"
                       alt="Workflow"
                     />
                     <img
                       className="hidden lg:block h-8 w-auto"
-                      src="https://tailwindui.com/img/logos/workflow-logo-indigo-500-mark-white-text.svg"
+                      src="https://static.lottiefiles.com/static_uploads/lf_Logo.png"
                       alt="Workflow"
                     />
                   </div>
                   <div className="hidden sm:block sm:ml-6">
                     <div className="flex space-x-4">
                       {navigation.map((item) => (
-                        <Link href={item.href}>
+                        <Link href={item.href} key={item.name}>
                           <a
                             key={item.name}
                             className={classNames(
                               router.asPath === item.href
-                                ? "bg-gray-900 text-white"
-                                : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                                ? "bg-lf-teal-dark text-white"
+                                : "text-lf-teal hover:bg-lf-teal hover:text-white",
                               "px-3 py-2 rounded-md text-sm font-medium"
                             )}
                           >
@@ -78,12 +80,17 @@ export default function Header() {
                     </div>
                   </div>
                 </div>
-                <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                  <div>
-                    <form action="" onSubmit={onSearch}>
-                      <input type="text" />
-                    </form>
-                  </div>
+                {/*Search field*/}
+                <div className="absolute hidden md:block inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                  <form
+                    onSubmit={onSearch}
+                    className="outline-none rounded-full w-full border-0 md:p-3 pb-2 relative"
+                  >
+                    <input
+                      type="text"
+                      className="outline-none text-sm focus:bg-lf-teal focus:text-white focus:font-bold bg-purple-white rounded-lg shadow-sm w-full w-full border-0 p-3 pl-10"
+                    />
+                  </form>
                 </div>
               </div>
             </div>
@@ -91,13 +98,13 @@ export default function Header() {
             <Disclosure.Panel className="sm:hidden">
               <div className="px-2 pt-2 pb-3 space-y-1">
                 {navigation.map((item) => (
-                  <Link href={item.href}>
+                  <Link href={item.href} key={item.name}>
                     <a
                       key={item.name}
                       className={classNames(
                         router.asPath === item.href
-                          ? "bg-gray-900 text-white"
-                          : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                          ? "bg-lf-teal-dark text-white"
+                          : "text-lf-teal hover:bg-lf-teal hover:text-white",
                         "block px-3 py-2 rounded-md text-base font-medium"
                       )}
                     >
@@ -105,6 +112,15 @@ export default function Header() {
                     </a>
                   </Link>
                 ))}
+                {/*Search field*/}
+                <div>
+                  <form onSubmit={onSearch}>
+                    <input
+                      type="text"
+                      className="outline-none text-sm focus:bg-lf-teal focus:text-white focus:font-bold bg-purple-white rounded-lg shadow-sm w-full w-full border-0 p-3 pl-10"
+                    />
+                  </form>
+                </div>
               </div>
             </Disclosure.Panel>
           </>
