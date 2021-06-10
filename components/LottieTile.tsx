@@ -9,6 +9,9 @@ type Props = {
 };
 
 export default function LottieTile({ title, assetUrl, createdAt }: Props) {
+  React.useEffect(() => {
+    import("@lottiefiles/lottie-player");
+  });
   return (
     <div className="w-full flex flex-col px-2 py-4 ">
       <div className="shadow-md hover:shadow-xl block rounded-t-lg border-b border-grey-lighter pt-1 pb-0 relative">
