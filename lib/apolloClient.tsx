@@ -7,7 +7,7 @@ function createApolloClient() {
   return new ApolloClient({
     ssrMode: typeof window === "undefined", // set to true for SSR
     link: new HttpLink({
-      uri: "YOUR-SLASH-ENDPOINT",
+      uri: "https://lf.idfk.lol/graphql",
     }),
     cache: new InMemoryCache(),
   });

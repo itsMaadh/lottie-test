@@ -48,6 +48,7 @@ export default function Header() {
                     )}
                   </Disclosure.Button>
                 </div>
+                {/*Lottiefiles logos*/}
                 <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
                   <div className="flex-shrink-0 flex items-center">
                     <img
@@ -61,6 +62,7 @@ export default function Header() {
                       alt="Workflow"
                     />
                   </div>
+                  {/*Menu items for desktop*/}
                   <div className="hidden sm:block sm:ml-6">
                     <div className="flex space-x-4">
                       {navigation.map((item) => (
@@ -96,6 +98,7 @@ export default function Header() {
 
             <Disclosure.Panel className="sm:hidden">
               <div className="px-2 pt-2 pb-3 space-y-1">
+                {/*Menu items for mobile*/}
                 {navigation.map((item) => (
                   <Link href={item.href} key={item.name}>
                     <a
