@@ -3,7 +3,9 @@ import { Dialog, Transition } from "@headlessui/react";
 import Button from "./Button";
 import { useLazyQuery, useMutation } from "@apollo/client";
 import { gql } from "@apollo/client/core";
+import Notification from "./Notification";
 
+// Query for getting S3 signed URL
 const GET_SIGNED_URL = gql`
   query getSignedUrl {
     signedUrl {
@@ -13,6 +15,7 @@ const GET_SIGNED_URL = gql`
   }
 `;
 
+// Mutation for saving lottie
 const SAVE_LOTTIE = gql`
   mutation createLottie($createLottieInput: CreateLottieInput!) {
     createLottie(createLottieInput: $createLottieInput) {
@@ -26,9 +29,30 @@ export default function UploadModal() {
   const [formData, setFormData] = useState({ description: null, file: null });
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [notificationData, setNotificationData] = useState({
+    mainText: null,
+    subText: null,
+    success: null,
+    visible: false,
+  });
   const cancelButtonRef = useRef(null);
   const [signedUrl, { data }] = useLazyQuery(GET_SIGNED_URL);
-  const [saveLottie] = useMutation(SAVE_LOTTIE);
+  const [saveLottie] = useMutation(SAVE_LOTTIE, {
+    onCompleted: () =>
+      setNotificationData({
+        mainText: "Successfully uploaded file!",
+        subText: "Your Lottie will now be visible from our site.",
+        success: true,
+        visible: true,
+      }),
+    onError: () =>
+      setNotificationData({
+        mainText: "Could not upload file!",
+        subText: "We could not upload your Lottie!",
+        success: false,
+        visible: true,
+      }),
+  });
   const isFormValid = formData.file && formData.description;
 
   const closeModal = () => {
@@ -81,6 +105,16 @@ export default function UploadModal() {
       >
         Upload lottie
       </button>
+      {notificationData.visible && (
+        <Notification
+          mainText={notificationData.mainText}
+          subText={notificationData.subText}
+          success={notificationData.success}
+          onClose={() =>
+            setNotificationData({ ...notificationData, visible: false })
+          }
+        />
+      )}
       <Transition.Root show={open} as={Fragment}>
         <Dialog
           as="div"
@@ -152,6 +186,16 @@ export default function UploadModal() {
                                 </label>
                               </div>
                             </div>
+                            {formData.file && (
+                              <div
+                                className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mt-4"
+                                role="alert"
+                              >
+                                <span className="block sm:inline">
+                                  Selected your Lottie!
+                                </span>
+                              </div>
+                            )}
                           </div>
                           <div className="mt-6">
                             <span className="text-sm">
