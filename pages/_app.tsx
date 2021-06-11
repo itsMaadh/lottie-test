@@ -31,6 +31,14 @@ function MyApp({ Component, pageProps }) {
       <Layout>
         <Component {...pageProps} />
       </Layout>
+      <style global jsx>{`
+        body {
+          height: 100vh;
+        }
+        #__next {
+          height: 100%;
+        }
+      `}</style>
     </ApolloProvider>
   );
 }

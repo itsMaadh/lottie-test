@@ -20,7 +20,9 @@ export default function UploadModal() {
     visible: false,
   });
   const cancelButtonRef = useRef(null);
-  const [signedUrl, { data }] = useLazyQuery(GetSignedUrlQuery);
+  const [signedUrl, { data }] = useLazyQuery(GetSignedUrlQuery, {
+    fetchPolicy: "no-cache",
+  });
   const [saveLottie] = useMutation(SaveLottieMutation, {
     onCompleted: () => {
       setNotificationData({
@@ -63,30 +65,32 @@ export default function UploadModal() {
     }
   };
 
-  const uploadToS3 = async (file: File, signedUrl: string) => {
+  const uploadToS3 = async (file: File, signedUrl: string): Promise<void> => {
     await fetch(signedUrl, {
       method: "PUT",
       body: file,
     });
   };
 
+  const saveToDatabase = async () => {
+    await uploadToS3(formData.file, data.signedUrl.signedUrl);
+    await saveLottie({
+      variables: {
+        createLottieInput: {
+          title: formData.description,
+          assetUrl: data.signedUrl.signedUrl.split("?")[0],
+        },
+      },
+    });
+    setLoading(false);
+    toggleModal(false);
+  };
+
   useEffect(() => {
-    (async () => {
-      if (data) {
-        await uploadToS3(formData.file, data.signedUrl.signedUrl);
-        await saveLottie({
-          variables: {
-            createLottieInput: {
-              title: formData.description,
-              assetUrl: data.signedUrl.signedUrl.split("?")[0],
-            },
-          },
-        });
-        setLoading(false);
-        toggleModal(false);
-      }
-    })();
-  }, [data]);
+    if (data) {
+      saveToDatabase();
+    }
+  }, [data?.signedUrl.signedUrl]);
 
   return (
     <>

@@ -8,12 +8,9 @@ type Props = {
 
 export default function Layout({ children }: Props) {
   return (
-    <div className="font-lf-font">
+    <div className="font-lf-font min-h-full flex flex-col">
       <Header />
-      <div
-        className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8"
-        style={{ minHeight: "85.5vh" }}
-      >
+      <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8 h-full flex flex-col w-full flex-1">
         {children}
       </div>
       <Footer />

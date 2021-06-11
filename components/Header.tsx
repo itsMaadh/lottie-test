@@ -12,7 +12,6 @@ export default function Header() {
   const router = useRouter();
   // navigation items
   const navigation = [
-    { name: "Home", href: "/" },
     {
       name: "Featured",
       href: "/featured",
@@ -75,7 +74,7 @@ export default function Header() {
                           <a
                             key={item.name}
                             className={classNames(
-                              router.asPath === item.href
+                              router.asPath.includes(item.href)
                                 ? "bg-lf-teal-dark text-white"
                                 : "text-lf-teal hover:bg-lf-teal hover:text-white",
                               "px-3 py-2 rounded-md text-sm font-medium tracking-wide"
@@ -109,7 +108,7 @@ export default function Header() {
                     <a
                       key={item.name}
                       className={classNames(
-                        router.asPath === item.href
+                        router.asPath.includes(item.href)
                           ? "bg-lf-teal-dark text-white"
                           : "text-lf-teal hover:bg-lf-teal hover:text-white",
                         "block px-3 py-2 rounded-md text-base font-medium tracking-wide"
