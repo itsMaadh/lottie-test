@@ -1,13 +1,17 @@
 import { initializeApollo } from "../lib/apolloClient";
 import { GetLottiesQuery } from "../graphql/getLottiesQuery";
 import LottiesGrid from "../components/LottiesGrid";
-import { LottiesResponse } from "../types/LottiesResponse";
+import { LottiesResponse } from "../types/ServerSideProps";
 
-export default function search({ data }: LottiesResponse) {
+interface ILottieResponse extends LottiesResponse {
+  query: string;
+}
+
+export default function search({ data, query }: ILottieResponse) {
   return (
     <div>
       <h3 className=" pt-6 font-semibold text-4xl">
-        Recently uploaded Lotties:
+        Search results for "{query}"
       </h3>
       <h2 className="leading-tight text-black text-xl font-normal mb-3 pt-2">
         The world’s largest source of freely-usable animations.
@@ -22,10 +26,10 @@ export async function getServerSideProps(props) {
   const data = await apolloClient.query({
     variables: {
       first: 6,
-      filter: props.req.url.split("=")[1],
+      filter: props.query.q,
       sort: "recent",
     },
     query: GetLottiesQuery,
   });
-  return { props: { data: data.data.lotties } };
+  return { props: { data: data.data.lotties, query: props.query.q } };
 }

@@ -1,7 +1,7 @@
 import { initializeApollo } from "../lib/apolloClient";
 import { GetLottiesQuery } from "../graphql/getLottiesQuery";
 import LottiesGrid from "../components/LottiesGrid";
-import { LottiesResponse } from "../types/LottiesResponse";
+import { LottiesResponse } from "../types/ServerSideProps";
 
 export default function featured({ data }: LottiesResponse) {
   return (

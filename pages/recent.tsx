@@ -1,5 +1,5 @@
 import { initializeApollo } from "../lib/apolloClient";
-import { LottiesResponse } from "../types/LottiesResponse";
+import { LottiesResponse } from "../types/ServerSideProps";
 import LottiesGrid from "../components/LottiesGrid";
 import { GetLottiesQuery } from "../graphql/getLottiesQuery";
 

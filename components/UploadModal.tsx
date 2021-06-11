@@ -2,27 +2,10 @@ import { Fragment, useEffect, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import Button from "./Button";
 import { useLazyQuery, useMutation } from "@apollo/client";
-import { gql } from "@apollo/client/core";
 import Notification from "./Notification";
-
-// Query for getting S3 signed URL
-const GET_SIGNED_URL = gql`
-  query getSignedUrl {
-    signedUrl {
-      filename
-      signedUrl
-    }
-  }
-`;
-
-// Mutation for saving lottie
-const SAVE_LOTTIE = gql`
-  mutation createLottie($createLottieInput: CreateLottieInput!) {
-    createLottie(createLottieInput: $createLottieInput) {
-      id
-    }
-  }
-`;
+import { SaveLottieMutation } from "../graphql/saveLottieMutation";
+import { GetSignedUrlQuery } from "../graphql/getSignedUrlQuery";
+import Image from "next/image";
 
 export default function UploadModal() {
   const [open, setOpen] = useState(false);
@@ -36,8 +19,8 @@ export default function UploadModal() {
     visible: false,
   });
   const cancelButtonRef = useRef(null);
-  const [signedUrl, { data }] = useLazyQuery(GET_SIGNED_URL);
-  const [saveLottie] = useMutation(SAVE_LOTTIE, {
+  const [signedUrl, { data }] = useLazyQuery(GetSignedUrlQuery);
+  const [saveLottie] = useMutation(SaveLottieMutation, {
     onCompleted: () =>
       setNotificationData({
         mainText: "Successfully uploaded file!",
@@ -165,9 +148,11 @@ export default function UploadModal() {
                             <div className="bg-white pt-2">
                               <div className="flex items-center justify-center sm:items-start">
                                 <label className="w-full h-full flex flex-col items-center px-4 py-6 bg-white text-lf-teal-dark rounded-lg shadow-lg tracking-wide border border-blue cursor-pointer hover:bg-lf-teal-dark hover:text-white">
-                                  <img
+                                  <Image
                                     src={"/dragdroplogo.png"}
-                                    alt="Upload lottie icon"
+                                    width={70}
+                                    height={70}
+                                    alt={"Upload Lottie icon"}
                                   />
                                   <span className="mt-6 font-medium leading-normal">
                                     Upload your own Lottie

@@ -1,5 +1,5 @@
 import LottieTile from "./LottieTile";
-import { LottiesResponse } from "../types/LottiesResponse";
+import { LottiesResponse } from "../types/ServerSideProps";
 
 export default function LottiesGrid({ data }: LottiesResponse) {
   return (

@@ -3,6 +3,7 @@ import { ApolloProvider } from "@apollo/client";
 import { useApollo } from "../lib/apolloClient";
 import Layout from "../components/Layout";
 import Head from "next/head";
+import React from "react";
 
 function MyApp({ Component, pageProps }) {
   const apolloClient = useApollo(pageProps.initialApolloState);
@@ -10,6 +11,8 @@ function MyApp({ Component, pageProps }) {
     <ApolloProvider client={apolloClient}>
       <Head>
         <title>Test | LottieFiles</title>
+        <meta name="content-language" content="en" />
+        <meta name="locale" content="en" />
         <link rel="icon" href="/favicon.png" />
         <link rel="preconnect" href="https://fonts.gstatic.com" />
         <link
