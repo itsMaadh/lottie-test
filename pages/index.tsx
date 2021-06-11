@@ -28,6 +28,8 @@ export default function Home({ data }: Companies) {
           <div className="mx-auto">
             <LottiePlayer
               src={"https://static4.lottiefiles.com/lotties/lf30_cskmaqjx.json"}
+              controls={false}
+              id={"HomeLottie"}
             />
           </div>
         </div>

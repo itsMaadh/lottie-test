@@ -6,6 +6,7 @@ import Notification from "./Notification";
 import { SaveLottieMutation } from "../graphql/saveLottieMutation";
 import { GetSignedUrlQuery } from "../graphql/getSignedUrlQuery";
 import Image from "next/image";
+import LottiePlayer from "./LottiePlayer";
 
 export default function UploadModal() {
   const [open, setOpen] = useState(false);
@@ -21,31 +22,38 @@ export default function UploadModal() {
   const cancelButtonRef = useRef(null);
   const [signedUrl, { data }] = useLazyQuery(GetSignedUrlQuery);
   const [saveLottie] = useMutation(SaveLottieMutation, {
-    onCompleted: () =>
+    onCompleted: () => {
       setNotificationData({
         mainText: "Successfully uploaded file!",
         subText: "Your Lottie will now be visible from our site.",
         success: true,
         visible: true,
-      }),
-    onError: () =>
+      });
+      setTimeout(() => {
+        setNotificationData({ ...notificationData, visible: false });
+      }, 3000);
+    },
+    onError: () => {
       setNotificationData({
         mainText: "Could not upload file!",
         subText: "We could not upload your Lottie!",
         success: false,
         visible: true,
-      }),
+      });
+      setTimeout(() => {
+        setNotificationData({ ...notificationData, visible: false });
+      }, 3000);
+    },
   });
   const isFormValid = formData.file && formData.description;
 
-  const closeModal = () => {
+  const toggleModal = (open: boolean): void => {
     setFormData({ file: null, description: null });
-    setOpen(false);
+    setOpen(open);
     setError(null);
   };
 
   const uploadLottie = async () => {
-    console.log(formData);
     if (!isFormValid) {
       setError("Please fill the fields first!");
     } else {
@@ -75,7 +83,7 @@ export default function UploadModal() {
           },
         });
         setLoading(false);
-        closeModal();
+        toggleModal(false);
       }
     })();
   }, [data]);
@@ -105,7 +113,7 @@ export default function UploadModal() {
           className="fixed z-10 inset-0 overflow-y-auto font-lf-font"
           initialFocus={cancelButtonRef}
           open={open}
-          onClose={closeModal}
+          onClose={() => toggleModal(false)}
         >
           <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
             {/*Transition overlay when closing and opening modal*/}
@@ -145,40 +153,50 @@ export default function UploadModal() {
                       <div className="p-3">
                         <form>
                           <div className="mb-2">
-                            <div className="bg-white pt-2">
-                              <div className="flex items-center justify-center sm:items-start">
-                                <label className="w-full h-full flex flex-col items-center px-4 py-6 bg-white text-lf-teal-dark rounded-lg shadow-lg tracking-wide border border-blue cursor-pointer hover:bg-lf-teal-dark hover:text-white">
-                                  <Image
-                                    src={"/dragdroplogo.png"}
-                                    width={70}
-                                    height={70}
-                                    alt={"Upload Lottie icon"}
+                            {formData.file ? (
+                              <div>
+                                <div className="h-64">
+                                  <LottiePlayer
+                                    id={formData.file.name}
+                                    src={URL.createObjectURL(formData.file)}
+                                    controls={false}
                                   />
-                                  <span className="mt-6 font-medium leading-normal">
-                                    Upload your own Lottie
-                                  </span>
-                                  <input
-                                    type="file"
-                                    className="hidden"
-                                    accept="application/JSON"
-                                    onChange={(e) =>
-                                      setFormData({
-                                        ...formData,
-                                        file: e.target.files[0],
-                                      })
-                                    }
-                                  />
-                                </label>
+                                </div>
+                                <button
+                                  className="w-full bg-red-600 text-white p-2 rounded mt-4"
+                                  onClick={() =>
+                                    setFormData({ ...formData, file: null })
+                                  }
+                                >
+                                  Remove
+                                </button>
                               </div>
-                            </div>
-                            {formData.file && (
-                              <div
-                                className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mt-4"
-                                role="alert"
-                              >
-                                <span className="block sm:inline">
-                                  Selected your Lottie!
-                                </span>
+                            ) : (
+                              <div className="bg-white pt-2">
+                                <div className="flex items-center justify-center sm:items-start">
+                                  <label className="w-full h-full flex flex-col items-center px-4 py-6 bg-white text-lf-teal-dark rounded-lg shadow-lg tracking-wide border border-blue cursor-pointer hover:bg-lf-teal-dark hover:text-white">
+                                    <Image
+                                      src={"/dragdroplogo.png"}
+                                      width={70}
+                                      height={70}
+                                      alt={"Upload Lottie icon"}
+                                    />
+                                    <span className="mt-6 font-medium leading-normal">
+                                      Upload your own Lottie
+                                    </span>
+                                    <input
+                                      type="file"
+                                      className="hidden"
+                                      accept="application/JSON"
+                                      onChange={(e) =>
+                                        setFormData({
+                                          ...formData,
+                                          file: e.target.files[0],
+                                        })
+                                      }
+                                    />
+                                  </label>
+                                </div>
                               </div>
                             )}
                           </div>
@@ -221,7 +239,7 @@ export default function UploadModal() {
                   <Button
                     type="secondary"
                     text="Cancel"
-                    onClick={closeModal}
+                    onClick={() => toggleModal(false)}
                     loading={false}
                   />
                 </div>

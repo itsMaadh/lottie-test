@@ -43,7 +43,11 @@ export default function Lottie({ data }: LottieResponse) {
                 className="flex justify-center items-center w-full"
                 style={{ height: "540px" }}
               >
-                <LottiePlayer src={data.lottie.assetUrl} />
+                <LottiePlayer
+                  src={data.lottie.assetUrl}
+                  controls={true}
+                  id={data.lottie.id}
+                />
               </div>
             </div>
           </div>

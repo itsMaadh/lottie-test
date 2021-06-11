@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import moment from "moment";
+import LottiePlayer from "./LottiePlayer";
 
 type Props = {
   id: string;
@@ -23,13 +24,7 @@ export default function LottieTile({ id, title, assetUrl, createdAt }: Props) {
           >
             <div className="flex flex-col w-full h-full justify-between">
               <div className="flex justify-center items-center h-72">
-                <lottie-player
-                  id={id}
-                  autoplay={true}
-                  loop={true}
-                  mode="normal"
-                  src={assetUrl}
-                />
+                <LottiePlayer src={assetUrl} controls={false} id={id} />
               </div>
             </div>
           </a>
