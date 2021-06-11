@@ -13,12 +13,20 @@ function MyApp({ Component, pageProps }) {
         <title>Test | LottieFiles</title>
         <meta name="content-language" content="en" />
         <meta name="locale" content="en" />
-        <link rel="icon" href="/favicon.png" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;900&display=swap"
-          rel="stylesheet"
+        <meta
+          property="og:title"
+          content={"LottieFiles. Free Lottie Animations"}
         />
+        <meta
+          name="description"
+          content={"Get latest new animations free on LottieFiles"}
+        />
+        <meta
+          name="og:description"
+          content={"Get latest new animations free on LottieFiles"}
+        />
+        <link rel="icon" href="/favicon.png" />
+        <link href="/fonts/poppins.css" rel="stylesheet" />
       </Head>
       <Layout>
         <Component {...pageProps} />

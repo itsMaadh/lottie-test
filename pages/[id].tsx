@@ -24,17 +24,16 @@ export default function Lottie({ data }: LottieResponse) {
         <title>{data.lottie.title} | LottieFiles</title>
         <meta
           property="og:title"
-          content={data.lottie.title + "on Lottiefiles. Free Lottie Animation"}
+          content={data.lottie.title + " on Lottiefiles. Free Lottie Animation"}
         />
         <meta
           name="description"
-          content={data.lottie.title + "Free on LottieFiles"}
+          content={data.lottie.title + " Free on LottieFiles"}
         />
         <meta
           name="og:description"
-          content={data.lottie.title + "Free on LottieFiles"}
+          content={data.lottie.title + " Free on LottieFiles"}
         />
-        <meta property="og:type" content="video.other" />
       </Head>
       <section className="pr-1 pl-1 pt-5 container mx-auto bg-white">
         <div className="flex flex-col mx-auto w-full h-full">
