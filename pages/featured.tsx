@@ -1,9 +1,9 @@
 import { initializeApollo } from "../lib/apolloClient";
 import { GetLottiesQuery } from "../graphql/getLottiesQuery";
 import LottiesGrid from "../components/LottiesGrid";
-import { LottieResponse } from "../types/LottieResponse";
+import { LottiesResponse } from "../types/LottiesResponse";
 
-export default function featured({ data }: LottieResponse) {
+export default function featured({ data }: LottiesResponse) {
   return (
     <div>
       <h3 className=" pt-6 font-semibold text-4xl">Featured Lotties:</h3>

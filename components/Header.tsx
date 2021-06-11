@@ -50,18 +50,23 @@ export default function Header() {
                 </div>
                 {/*Lottiefiles logos*/}
                 <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
-                  <div className="flex-shrink-0 flex items-center">
-                    <img
-                      className="block lg:hidden h-8 w-auto"
-                      src="https://static.lottiefiles.com/static_uploads/lf_Symbol.svg"
-                      alt="Workflow"
-                    />
-                    <img
-                      className="hidden lg:block h-8 w-auto"
-                      src="https://static.lottiefiles.com/static_uploads/lf_Logo.png"
-                      alt="Workflow"
-                    />
-                  </div>
+                  <Link href={"/"}>
+                    <a>
+                      <div className="flex-shrink-0 flex items-center">
+                        <img
+                          className="block lg:hidden h-8 w-auto"
+                          src="https://static.lottiefiles.com/static_uploads/lf_Symbol.svg"
+                          alt="Workflow"
+                        />
+                        <img
+                          className="hidden lg:block h-8 w-auto"
+                          src="https://static.lottiefiles.com/static_uploads/lf_Logo.png"
+                          alt="Workflow"
+                        />
+                      </div>
+                    </a>
+                  </Link>
+
                   {/*Menu items for desktop*/}
                   <div className="hidden sm:block sm:ml-6">
                     <div className="flex space-x-4">
@@ -73,7 +78,7 @@ export default function Header() {
                               router.asPath === item.href
                                 ? "bg-lf-teal-dark text-white"
                                 : "text-lf-teal hover:bg-lf-teal hover:text-white",
-                              "px-3 py-2 rounded-md text-sm font-medium"
+                              "px-3 py-2 rounded-md text-sm font-medium tracking-wide"
                             )}
                           >
                             {item.name}
@@ -107,7 +112,7 @@ export default function Header() {
                         router.asPath === item.href
                           ? "bg-lf-teal-dark text-white"
                           : "text-lf-teal hover:bg-lf-teal hover:text-white",
-                        "block px-3 py-2 rounded-md text-base font-medium"
+                        "block px-3 py-2 rounded-md text-base font-medium tracking-wide"
                       )}
                     >
                       {item.name}

@@ -1,9 +1,9 @@
 import { initializeApollo } from "../lib/apolloClient";
-import { LottieResponse } from "../types/LottieResponse";
+import { LottiesResponse } from "../types/LottiesResponse";
 import LottiesGrid from "../components/LottiesGrid";
 import { GetLottiesQuery } from "../graphql/getLottiesQuery";
 
-export default function recent({ data }: LottieResponse) {
+export default function recent({ data }: LottiesResponse) {
   return (
     <div>
       <h3 className=" pt-6 font-semibold text-4xl">
