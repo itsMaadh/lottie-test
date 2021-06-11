@@ -10,9 +10,9 @@ export default function Home({ data }: Companies) {
       <div className="py-12 sm:pb-24 sm:pt-12 px-5 md:px-0">
         <div className="container md:flex mx-auto">
           <div>
-            <h1 className="text-4xl tracking-wider sm:text-6xl font-semibold mb-4 text-black max-w-lg mx-auto text-center md:text-left">
+            <h1 className="text-4xl tracking-wide sm:text-6xl font-semibold mb-4 text-black max-w-lg mx-auto text-center md:text-left">
               Lightweight, scalable animations
-              <span className="opacity-75 text-gray-500">
+              <span className="text-gray-500">
                 <span> </span>
                 for your website and apps
               </span>
@@ -50,6 +50,8 @@ export default function Home({ data }: Companies) {
                   className="h-5 sm:h-8 mx-3 my-1 sm:mx-3 sm:my-1 md:mx-4 md:my-3 opacity-25"
                   src={company.assetUrl}
                   alt={company.name}
+                  width="auto"
+                  height="auto"
                 />
               </div>
             ))}
