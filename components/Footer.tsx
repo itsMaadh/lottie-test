@@ -1,7 +1,8 @@
 export default function Footer() {
   return (
-    <div>
-      <p>Footer</p>
+    <div className="border-t p-4 text-gray-400 text-center text-sm bottom-0">
+      <p>LottieFiles is by Design Barn Inc.</p>
+      <p>Copyright © 2021 Design Barn Inc. All rights reserved.</p>
     </div>
   );
 }

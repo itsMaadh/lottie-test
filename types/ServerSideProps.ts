@@ -28,3 +28,15 @@ export type Lottie = {
   title: string;
   createdAt: Date;
 };
+
+export type Companies = {
+  data: {
+    companies: Company[];
+  };
+};
+
+export type Company = {
+  id: string;
+  name: string;
+  assetUrl: string;
+};

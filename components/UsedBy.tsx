@@ -3,7 +3,7 @@ type Props = {
   alt: string;
 };
 
-export default function CompanyLogo({ src, alt }: Props) {
+export default function UsedBy({ src, alt }: Props) {
   return (
     <div>
       <img

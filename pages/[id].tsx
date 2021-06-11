@@ -48,7 +48,7 @@ export default function Lottie({ data }: LottieResponse) {
             </div>
           </div>
         </div>
-        <div className="pt-5">
+        <div className="py-5">
           <p className="tracking-wide font-semibold text-2xl">
             {data.lottie.title}
           </p>

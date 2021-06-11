@@ -15,7 +15,7 @@ export default function LottiePlayer({ src }: Props) {
       loop={true}
       mode="normal"
       src={src}
-      controls={"false"}
+      controls={false}
     />
   );
 }

@@ -83,7 +83,7 @@ export default function UploadModal() {
   return (
     <>
       <button
-        className="bg-lf-teal text-base trans hover:bg-lf-teal-dark sm:text-lg text-white rounded-md py-4 px-8 sm:py-2 sm:px-10"
+        className="bg-lf-teal text-base font-semibold tracking-wide hover:bg-lf-teal-dark hover:shadow-lg sm:text-lg text-white rounded-md py-4 px-8 sm:py-3 sm:px-16"
         onClick={() => setOpen(true)}
       >
         Upload lottie
