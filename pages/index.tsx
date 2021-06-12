@@ -17,7 +17,7 @@ export default function Home({ data }: Companies) {
                 for your website and apps
               </span>
             </h1>
-            <p className="text-base sm:text-base tracking-wide mb-8 text-gray-500 max-w-lg mx-auto md:ml-0 text-center md:text-left leading-normal w-2/3">
+            <p className="text-base tracking-wide mb-8 text-gray-500 max-w-lg mx-auto md:ml-0 text-center md:text-left leading-normal w-2/3">
               LottieFiles provides all the tools that you need to create, edit,
               test and display Lottie animations. Pls hire me.
             </p>
@@ -62,7 +62,7 @@ export default function Home({ data }: Companies) {
   );
 }
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
   const apolloClient = initializeApollo();
   const data = await apolloClient.query({ query: GetUsedByCompaniesQuery });
   return { props: { data: data.data } };
