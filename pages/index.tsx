@@ -1,9 +1,8 @@
 import UploadModal from "../components/UploadModal";
-import LottiePlayer from "../components/LottiePlayer";
 import { initializeApollo } from "../lib/apolloClient";
 import { GetUsedByCompaniesQuery } from "../graphql/getUsedByCompaniesQuery";
 import { Companies } from "../types/ServerSideProps";
-import Image from "next/image";
+import { Player } from "@lottiefiles/react-lottie-player";
 
 export default function Home({ data }: Companies) {
   return (
@@ -27,10 +26,11 @@ export default function Home({ data }: Companies) {
             </div>
           </div>
           <div className="mx-auto">
-            <LottiePlayer
+            <Player
               src={"https://static4.lottiefiles.com/lotties/lf30_cskmaqjx.json"}
-              controls={false}
               id={"HomeLottie"}
+              loop={true}
+              autoplay={true}
             />
           </div>
         </div>

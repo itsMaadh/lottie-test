@@ -9,7 +9,7 @@ type Props = {
 };
 
 export default function Button({ text, type, onClick, loading }: Props) {
-  const primary = "bg-lf-teal-dark focus:ring-lf-teal-dark";
+  const primary = "bg-lf-teal focus:ring-lf-teal-dark hover:bg-lf-teal-dark";
   const secondary =
     "bg-white hover:bg-gray-50 focus:ring-gray-50 text-gray-700 border-gray-300";
   const base =

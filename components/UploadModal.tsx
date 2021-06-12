@@ -6,7 +6,8 @@ import Notification from "./Notification";
 import { SaveLottieMutation } from "../graphql/saveLottieMutation";
 import { GetSignedUrlQuery } from "../graphql/getSignedUrlQuery";
 import Image from "next/image";
-import LottiePlayer from "./LottiePlayer";
+import { SignedURLData } from "../types/UploadModalProps";
+import { Player } from "@lottiefiles/react-lottie-player";
 
 export default function UploadModal() {
   const [open, setOpen] = useState(false);
@@ -20,7 +21,7 @@ export default function UploadModal() {
     visible: false,
   });
   const cancelButtonRef = useRef(null);
-  const [signedUrl, { data }] = useLazyQuery(GetSignedUrlQuery, {
+  const [signedUrl, { data }] = useLazyQuery<SignedURLData>(GetSignedUrlQuery, {
     fetchPolicy: "no-cache",
   });
   const [saveLottie] = useMutation(SaveLottieMutation, {
@@ -95,7 +96,7 @@ export default function UploadModal() {
   return (
     <>
       <button
-        className="bg-lf-teal text-base font-semibold tracking-wide hover:bg-lf-teal-dark hover:shadow-lg sm:text-lg text-white rounded-md py-4 px-8 sm:py-3 sm:px-16"
+        className="bg-lf-teal duration-150 text-base font-semibold tracking-wide hover:bg-lf-teal-dark hover:shadow-lg sm:text-lg text-white rounded-md py-4 px-8 sm:py-3 sm:px-16"
         onClick={() => setOpen(true)}
       >
         Upload lottie
@@ -159,13 +160,13 @@ export default function UploadModal() {
                           <div className="mb-2">
                             {formData.file ? (
                               <div>
-                                <div className="h-64">
-                                  <LottiePlayer
-                                    id={formData.file.name}
-                                    src={URL.createObjectURL(formData.file)}
-                                    controls={false}
-                                  />
-                                </div>
+                                <Player
+                                  autoplay={true}
+                                  loop={true}
+                                  src={URL.createObjectURL(formData.file)}
+                                  id={formData.file.name}
+                                  style={{ height: "260px" }}
+                                />
                                 <button
                                   className="w-full bg-red-600 text-white p-2 rounded mt-4"
                                   onClick={() =>

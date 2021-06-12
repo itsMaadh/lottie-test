@@ -43,7 +43,7 @@ export default function featured({ data }: LottiesResponse) {
           <button
             type={"button"}
             onClick={back}
-            className="bg-lf-teal text-white font-semibold hover:bg-lf-teal-dark rounded-lg mr-2 px-6 py-2 mx-0 outline-none focus:shadow-outline"
+            className="bg-lf-teal duration-150 text-white font-semibold hover:bg-lf-teal-dark rounded-lg mr-2 px-6 py-2 mx-0 outline-none focus:shadow-outline"
           >
             Back
           </button>
@@ -52,7 +52,7 @@ export default function featured({ data }: LottiesResponse) {
           <button
             type={"button"}
             onClick={next}
-            className="bg-lf-teal text-white font-semibold hover:bg-lf-teal-dark rounded-lg  px-6 py-2 mx-0 outline-none focus:shadow-outline"
+            className="bg-lf-teal duration-150 text-white font-semibold hover:bg-lf-teal-dark rounded-lg  px-6 py-2 mx-0 outline-none focus:shadow-outline"
           >
             Next
           </button>
