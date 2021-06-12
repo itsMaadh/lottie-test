@@ -3,6 +3,7 @@ import { MenuIcon, XIcon } from "@heroicons/react/outline";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import React from "react";
+import Image from "next/image";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -52,16 +53,22 @@ export default function Header() {
                   <Link href={"/"}>
                     <a>
                       <div className="flex-shrink-0 flex items-center">
-                        <img
-                          className="block lg:hidden h-8 w-auto"
-                          src="https://static.lottiefiles.com/static_uploads/lf_Symbol.svg"
-                          alt="LottieFiles logo"
-                        />
-                        <img
-                          className="hidden lg:block h-8 w-auto"
-                          src="https://static.lottiefiles.com/static_uploads/lf_Logo.png"
-                          alt="LottieFiles logo"
-                        />
+                        <div className="block lg:hidden h-8 w-auto">
+                          <Image
+                            src={"/lf_Symbol.svg"}
+                            alt="LottieFiles logo"
+                            width={30}
+                            height={30}
+                          />
+                        </div>
+                        <div className="hidden lg:block h-8 w-auto">
+                          <Image
+                            src={"/lf_Logo.png"}
+                            alt="LottieFiles logo"
+                            width={120}
+                            height={35}
+                          />
+                        </div>
                       </div>
                     </a>
                   </Link>

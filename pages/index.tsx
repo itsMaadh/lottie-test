@@ -3,6 +3,7 @@ import LottiePlayer from "../components/LottiePlayer";
 import { initializeApollo } from "../lib/apolloClient";
 import { GetUsedByCompaniesQuery } from "../graphql/getUsedByCompaniesQuery";
 import { Companies } from "../types/ServerSideProps";
+import Image from "next/image";
 
 export default function Home({ data }: Companies) {
   return (
