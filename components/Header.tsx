@@ -55,12 +55,12 @@ export default function Header() {
                         <img
                           className="block lg:hidden h-8 w-auto"
                           src="https://static.lottiefiles.com/static_uploads/lf_Symbol.svg"
-                          alt="Workflow"
+                          alt="LottieFiles logo"
                         />
                         <img
                           className="hidden lg:block h-8 w-auto"
                           src="https://static.lottiefiles.com/static_uploads/lf_Logo.png"
-                          alt="Workflow"
+                          alt="LottieFiles logo"
                         />
                       </div>
                     </a>

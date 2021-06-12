@@ -3,6 +3,8 @@ import { LottiesResponse } from "../types/ServerSideProps";
 import LottiesGrid from "../components/LottiesGrid";
 import { GetLottiesQuery } from "../graphql/getLottiesQuery";
 import { useRouter } from "next/router";
+import Title from "../components/Title";
+import Description from "../components/Description";
 
 export default function recent({ data }: LottiesResponse) {
   const pageLimit = 6;
@@ -11,25 +13,29 @@ export default function recent({ data }: LottiesResponse) {
   const next = async () => {
     await router.push({
       pathname: "/recent",
-      query: { pageLimit, after: data.page.pageInfo.endCursor },
+      query: { after: data.page.pageInfo.endCursor },
     });
   };
 
   const back = async () => {
     await router.push({
       pathname: "/recent",
-      query: { pageLimit, before: data.page.pageInfo.startCursor },
+      query: { before: data.page.pageInfo.startCursor },
     });
   };
 
   return (
     <>
-      <h3 className=" pt-6 font-semibold text-4xl">
-        Recently uploaded Lotties:
-      </h3>
-      <h2 className="leading-tight text-black text-xl font-normal mb-3 pt-2">
-        The world’s largest source of freely-usable animations.
-      </h2>
+      <div className="py-6">
+        <Title
+          text={"The world’s largest source of freely-usable animations"}
+        />
+        <Description
+          text={
+            "Our large community of creative designers contribute their awesome animations daily, with a variety of styles to suit your needs for web, app, social media and more. Download now to use as Lottie, GIF, MP4 or JSON."
+          }
+        />
+      </div>
       <LottiesGrid data={data} />
       <div
         className="flex justify-center rounded-lg text-lg mb-6 mt-auto mb-5"

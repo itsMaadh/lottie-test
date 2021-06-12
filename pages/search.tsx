@@ -3,6 +3,8 @@ import { GetLottiesQuery } from "../graphql/getLottiesQuery";
 import LottiesGrid from "../components/LottiesGrid";
 import { LottiesResponse } from "../types/ServerSideProps";
 import { useRouter } from "next/router";
+import Title from "../components/Title";
+import Description from "../components/Description";
 
 interface ILottieResponse extends LottiesResponse {
   query: string;
@@ -15,25 +17,22 @@ export default function search({ data, query }: ILottieResponse) {
   const next = async () => {
     await router.push({
       pathname: "/recent",
-      query: { pageLimit, after: data.page.pageInfo.endCursor },
+      query: { after: data.page.pageInfo.endCursor },
     });
   };
 
   const back = async () => {
     await router.push({
       pathname: "/recent",
-      query: { pageLimit, before: data.page.pageInfo.startCursor },
+      query: { before: data.page.pageInfo.startCursor },
     });
   };
 
   return (
     <>
-      <h3 className=" pt-6 font-semibold text-4xl">
-        Search results for "{query}"
-      </h3>
-      <h2 className="leading-tight text-black text-xl font-normal mb-3 pt-2">
-        The world’s largest source of freely-usable animations.
-      </h2>
+      <div className="py-6">
+        <Title text={"Search results for '" + query + "'"} />
+      </div>
       {data.page.edges.length ? <LottiesGrid data={data} /> : <div>Nodata</div>}
       <div
         className="flex justify-center rounded-lg text-lg mb-6 mt-auto mb-5"

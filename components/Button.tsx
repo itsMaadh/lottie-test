@@ -16,7 +16,12 @@ export default function Button({ text, type, onClick, loading }: Props) {
     "duration-150 group relative w-full inline-flex mb-3 justify-center rounded-md border border-transparent shadow-sm px-4 py-2 text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm";
   const classNames = `${base} ${type === "primary" ? primary : secondary}`;
   return (
-    <button type="button" onClick={onClick} className={classNames}>
+    <button
+      type="button"
+      onClick={onClick}
+      className={classNames}
+      disabled={loading}
+    >
       {loading && <LoadingIcon />}
       {text}
     </button>

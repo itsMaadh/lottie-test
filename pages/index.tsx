@@ -8,7 +8,7 @@ export default function Home({ data }: Companies) {
   return (
     <div>
       <div className="py-12 sm:pb-24 sm:pt-12 px-5 md:px-0">
-        <div className="container md:flex mx-auto">
+        <div className="md:flex mx-auto">
           <div>
             <h1 className="text-4xl tracking-wide sm:text-6xl font-semibold mb-4 text-black max-w-lg mx-auto text-center md:text-left">
               Lightweight, scalable animations
