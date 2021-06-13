@@ -4,11 +4,18 @@ import LoadingIcon from "./LoadingIcon";
 type Props = {
   text: string;
   type: "primary" | "secondary";
-  onClick: (e: MouseEvent<HTMLButtonElement>) => void;
+  onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
   loading: boolean;
+  htmlType: "button" | "submit";
 };
 
-export default function LoadingButton({ text, type, onClick, loading }: Props) {
+export default function LoadingButton({
+  text,
+  type,
+  onClick,
+  loading,
+  htmlType,
+}: Props) {
   const primary = "bg-lf-teal focus:ring-lf-teal-dark hover:bg-lf-teal-dark";
   const secondary =
     "bg-white hover:bg-gray-50 focus:ring-gray-50 text-gray-700 border-gray-300";
@@ -17,7 +24,7 @@ export default function LoadingButton({ text, type, onClick, loading }: Props) {
   const classNames = `${base} ${type === "primary" ? primary : secondary}`;
   return (
     <button
-      type="button"
+      type={htmlType}
       onClick={onClick}
       className={classNames}
       disabled={loading}

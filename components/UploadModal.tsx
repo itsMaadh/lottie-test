@@ -1,17 +1,17 @@
-import { Fragment, useEffect, useRef, useState } from "react";
+import { Fragment, useContext, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import LoadingButton from "./LoadingButton";
-import { useLazyQuery, useMutation } from "@apollo/client";
+import { getApolloContext, useMutation } from "@apollo/client";
 import Notification from "./Notification";
 import { SaveLottieMutation } from "../graphql/saveLottieMutation";
 import { GetSignedUrlQuery } from "../graphql/getSignedUrlQuery";
 import Image from "next/image";
-import { SignedURLData } from "../types/UploadModalProps";
 import { Player } from "@lottiefiles/react-lottie-player";
 
 export default function UploadModal() {
+  const { client } = useContext(getApolloContext());
   const [open, setOpen] = useState(false);
-  const [formData, setFormData] = useState({ description: null, file: null });
+  const [file, setFile] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [notificationData, setNotificationData] = useState({
@@ -21,52 +21,36 @@ export default function UploadModal() {
     visible: false,
   });
   const cancelButtonRef = useRef(null);
-  // GraphQL query for fetching the S3 signed URL
-  const [signedUrl, { data }] = useLazyQuery<SignedURLData>(GetSignedUrlQuery, {
-    fetchPolicy: "no-cache",
-  });
+
   // GraphQL mutation for saving the lottie to database
   const [saveLottie] = useMutation(SaveLottieMutation, {
-    onCompleted: () => {
-      setNotificationData({
-        mainText: "Successfully uploaded file!",
-        subText: "Your Lottie will now be visible from our site.",
-        success: true,
-        visible: true,
-      });
-      setTimeout(() => {
-        setNotificationData({ ...notificationData, visible: false });
-      }, 3000);
-    },
-    onError: () => {
-      setNotificationData({
-        mainText: "Could not upload file!",
-        subText: "We could not upload your Lottie!",
-        success: false,
-        visible: true,
-      });
-      setTimeout(() => {
-        setNotificationData({ ...notificationData, visible: false });
-      }, 3000);
-    },
+    onCompleted: () => {},
+    onError: () => {},
   });
-  const isFormValid = formData.file && formData.description;
 
+  // Open/Close modal
   const toggleModal = (open: boolean): void => {
-    setFormData({ file: null, description: null });
-    setOpen(open);
+    setFile(null);
     setError(null);
+    setOpen(open);
   };
 
   // function called on upload button
-  const uploadLottie = async () => {
+  const uploadLottie = async (e) => {
+    e.preventDefault();
+    const description = e.target?.description.value;
+    const isFormValid = file && description;
     if (!isFormValid) {
       setError("Please fill the fields first!");
     } else {
       setLoading(true);
       setError(null);
-      // S3 signed URL fetching
-      signedUrl();
+      // GraphQL query for fetching the S3 signed URL
+      const s3Url = await client.query({ query: GetSignedUrlQuery });
+      // Upload to S3 and save to DB
+      await saveToDatabase(description, s3Url.data.signedUrl.signedUrl);
+      setLoading(false);
+      toggleModal(false);
     }
   };
 
@@ -79,26 +63,37 @@ export default function UploadModal() {
   };
 
   // Run mutation to save to database
-  const saveToDatabase = async () => {
-    await uploadToS3(formData.file, data.signedUrl.signedUrl);
-    await saveLottie({
-      variables: {
-        createLottieInput: {
-          title: formData.description,
-          assetUrl: data.signedUrl.signedUrl.split("?")[0],
+  const saveToDatabase = async (description: string, signedUrl: string) => {
+    await uploadToS3(file, signedUrl);
+    try {
+      await saveLottie({
+        variables: {
+          createLottieInput: {
+            title: description,
+            assetUrl: signedUrl.split("?")[0],
+          },
         },
-      },
-    });
-    setLoading(false);
-    toggleModal(false);
-  };
-
-  // on a new S3 URL fetch, save lottie to database
-  useEffect(() => {
-    if (data) {
-      saveToDatabase();
+      });
+      setNotificationData({
+        mainText: "Successfully uploaded file!",
+        subText: "Your Lottie will now be visible from our site.",
+        success: true,
+        visible: true,
+      });
+    } catch {
+      setNotificationData({
+        mainText: "Could not upload file!",
+        subText: "We could not upload your Lottie!",
+        success: false,
+        visible: true,
+      });
+    } finally {
+      // Close notification after 3s
+      setTimeout(() => {
+        setNotificationData({ ...notificationData, visible: false });
+      }, 3000);
     }
-  }, [data?.signedUrl.signedUrl]);
+  };
 
   return (
     <>
@@ -159,26 +154,24 @@ export default function UploadModal() {
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
               <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                <div className="max-w-md mx-auto bg-white rounded-lg overflow-hidden md:max-w-lg">
-                  <div className="md:flex">
-                    <div className="w-full">
-                      <div className="p-3">
-                        <form>
+                <form onSubmit={uploadLottie}>
+                  <div className="max-w-md mx-auto bg-white rounded-lg overflow-hidden md:max-w-lg">
+                    <div className="md:flex">
+                      <div className="w-full">
+                        <div className="p-3">
                           <div className="mb-2">
-                            {formData.file ? (
+                            {file ? (
                               <div>
                                 <Player
                                   autoplay={true}
                                   loop={true}
-                                  src={URL.createObjectURL(formData.file)}
-                                  id={formData.file.name}
+                                  src={URL.createObjectURL(file)}
+                                  id={file.name}
                                   style={{ height: "260px" }}
                                 />
                                 <button
                                   className="w-full bg-red-600 text-white p-2 rounded mt-4"
-                                  onClick={() =>
-                                    setFormData({ ...formData, file: null })
-                                  }
+                                  onClick={() => setFile(null)}
                                 >
                                   Remove
                                 </button>
@@ -189,8 +182,8 @@ export default function UploadModal() {
                                   <label className="w-full h-full flex flex-col items-center px-4 py-6 bg-white text-lf-teal-dark rounded-lg shadow-lg tracking-wide border border-blue cursor-pointer hover:bg-lf-teal-dark hover:text-white">
                                     <Image
                                       src={"/dragdroplogo.png"}
-                                      width={70}
-                                      height={70}
+                                      width={60}
+                                      height={60}
                                       alt={"Upload Lottie icon"}
                                     />
                                     <span className="mt-6 font-medium leading-normal">
@@ -201,10 +194,7 @@ export default function UploadModal() {
                                       className="hidden"
                                       accept="application/JSON"
                                       onChange={(e) =>
-                                        setFormData({
-                                          ...formData,
-                                          file: e.target.files[0],
-                                        })
+                                        setFile(e.target.files[0])
                                       }
                                     />
                                   </label>
@@ -217,15 +207,10 @@ export default function UploadModal() {
                               Give your Lottie a title:
                             </span>
                             <input
+                              name="description"
                               type="text"
                               placeholder="Title"
                               className="h-12 px-3 w-full border-gray-200 border rounded focus:outline-none focus:border-gray-300 mt-2"
-                              onChange={(e) =>
-                                setFormData({
-                                  ...formData,
-                                  description: e.target.value,
-                                })
-                              }
                             />
                           </div>
                           {error && (
@@ -236,25 +221,28 @@ export default function UploadModal() {
                               <span className="block sm:inline">{error}</span>
                             </div>
                           )}
-                        </form>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-                <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                  <LoadingButton
-                    type="primary"
-                    text="Upload"
-                    onClick={uploadLottie}
-                    loading={loading}
-                  />
-                  <LoadingButton
-                    type="secondary"
-                    text="Cancel"
-                    onClick={() => toggleModal(false)}
-                    loading={false}
-                  />
-                </div>
+                  <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <LoadingButton
+                      type="primary"
+                      text="Upload"
+                      loading={loading}
+                      htmlType={"submit"}
+                    />
+                    <div ref={cancelButtonRef}>
+                      <LoadingButton
+                        type="secondary"
+                        text="Cancel"
+                        onClick={() => toggleModal(false)}
+                        loading={false}
+                        htmlType={"button"}
+                      />
+                    </div>
+                  </div>
+                </form>
               </div>
             </Transition.Child>
           </div>
