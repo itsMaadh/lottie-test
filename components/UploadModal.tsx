@@ -46,7 +46,10 @@ export default function UploadModal() {
       setLoading(true);
       setError(null);
       // GraphQL query for fetching the S3 signed URL
-      const s3Url = await client.query({ query: GetSignedUrlQuery });
+      const s3Url = await client.query({
+        query: GetSignedUrlQuery,
+        fetchPolicy: "no-cache",
+      });
       // Upload to S3 and save to DB
       await saveToDatabase(description, s3Url.data.signedUrl.signedUrl);
       setLoading(false);
