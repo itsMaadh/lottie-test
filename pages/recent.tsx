@@ -2,28 +2,12 @@ import { initializeApollo } from "../lib/apolloClient";
 import { LottiesResponse } from "../types/ServerSideProps";
 import LottiesGrid from "../components/LottiesGrid";
 import { GetLottiesQuery } from "../graphql/getLottiesQuery";
-import { useRouter } from "next/router";
 import Title from "../components/Title";
 import Description from "../components/Description";
+import { DEFAULT_TAKE } from "../lib/constants";
+import Pagination from "../components/Pagination";
 
 export default function recent({ data }: LottiesResponse) {
-  const pageLimit = 6;
-  const router = useRouter();
-
-  const next = async () => {
-    await router.push({
-      pathname: "/recent",
-      query: { after: data.page.pageInfo.endCursor },
-    });
-  };
-
-  const back = async () => {
-    await router.push({
-      pathname: "/recent",
-      query: { before: data.page.pageInfo.startCursor },
-    });
-  };
-
   return (
     <>
       <div className="py-6">
@@ -37,29 +21,16 @@ export default function recent({ data }: LottiesResponse) {
         />
       </div>
       <LottiesGrid data={data} />
-      <div
-        className="flex justify-center rounded-lg text-lg mb-6 mt-auto mb-5"
-        role="group"
-      >
-        {data.pageData.offset >= pageLimit && (
-          <button
-            type={"button"}
-            onClick={back}
-            className="bg-lf-teal text-white font-semibold hover:bg-lf-teal-dark rounded-lg mr-2 px-6 py-2 mx-0 outline-none focus:shadow-outline"
-          >
-            Back
-          </button>
-        )}
-        {data.pageData.offset + pageLimit < data.pageData.count && (
-          <button
-            type={"button"}
-            onClick={next}
-            className="bg-lf-teal text-white font-semibold hover:bg-lf-teal-dark rounded-lg  px-6 py-2 mx-0 outline-none focus:shadow-outline"
-          >
-            Next
-          </button>
-        )}
-      </div>
+      <Pagination
+        pageData={{
+          count: data.pageData.count,
+          offset: data.pageData.offset,
+          startCursor: data.page.pageInfo.startCursor,
+          endCursor: data.page.pageInfo.endCursor,
+        }}
+        route={"featured"}
+        searchQuery={""}
+      />
     </>
   );
 }
@@ -68,8 +39,8 @@ export async function getServerSideProps(props) {
   const apolloClient = initializeApollo();
   const data = await apolloClient.query({
     variables: {
-      first: props.query?.after || !props.query.before ? 6 : null,
-      last: props.query?.before ? 6 : null,
+      first: props.query?.after || !props.query.before ? DEFAULT_TAKE : null,
+      last: props.query?.before ? DEFAULT_TAKE : null,
       filter: "",
       sort: "recent",
       after: props.query?.after ? props.query.after : null,

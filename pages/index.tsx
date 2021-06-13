@@ -3,6 +3,7 @@ import { initializeApollo } from "../lib/apolloClient";
 import { GetUsedByCompaniesQuery } from "../graphql/getUsedByCompaniesQuery";
 import { Companies } from "../types/ServerSideProps";
 import { Player } from "@lottiefiles/react-lottie-player";
+import UsedBy from "../components/UsedBy";
 
 export default function Home({ data }: Companies) {
   return (
@@ -47,13 +48,7 @@ export default function Home({ data }: Companies) {
           <div className="flex flex-wrap items-center justify-center relative pb-8">
             {data.companies.map((company) => (
               <div key={company.id}>
-                <img
-                  className="h-5 sm:h-8 mx-3 my-1 sm:mx-3 sm:my-1 md:mx-4 md:my-3 opacity-25"
-                  src={company.assetUrl}
-                  alt={company.name}
-                  width="auto"
-                  height="auto"
-                />
+                <UsedBy src={company.assetUrl} alt={company.name} />
               </div>
             ))}
           </div>

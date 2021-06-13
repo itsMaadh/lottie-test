@@ -2,8 +2,11 @@ import { initializeApollo } from "../lib/apolloClient";
 import { GetLottiesQuery } from "../graphql/getLottiesQuery";
 import LottiesGrid from "../components/LottiesGrid";
 import { LottiesResponse } from "../types/ServerSideProps";
-import { useRouter } from "next/router";
 import Title from "../components/Title";
+import { DEFAULT_TAKE } from "../lib/constants";
+import Pagination from "../components/Pagination";
+import { Player } from "@lottiefiles/react-lottie-player";
+import React from "react";
 import Description from "../components/Description";
 
 interface ILottieResponse extends LottiesResponse {
@@ -11,52 +14,44 @@ interface ILottieResponse extends LottiesResponse {
 }
 
 export default function search({ data, query }: ILottieResponse) {
-  const pageLimit = 6;
-  const router = useRouter();
-
-  const next = async () => {
-    await router.push({
-      pathname: "/recent",
-      query: { after: data.page.pageInfo.endCursor },
-    });
-  };
-
-  const back = async () => {
-    await router.push({
-      pathname: "/recent",
-      query: { before: data.page.pageInfo.startCursor },
-    });
-  };
-
   return (
     <>
       <div className="py-6">
         <Title text={"Search results for '" + query + "'"} />
       </div>
-      {data.page.edges.length ? <LottiesGrid data={data} /> : <div>Nodata</div>}
-      <div
-        className="flex justify-center rounded-lg text-lg mb-6 mt-auto mb-5"
-        role="group"
-      >
-        {data.pageData.offset >= pageLimit && (
-          <button
-            type={"button"}
-            onClick={back}
-            className="bg-lf-teal text-white font-semibold hover:bg-lf-teal-dark rounded-lg mr-2 px-6 py-2 mx-0 outline-none focus:shadow-outline"
+      {data.page.edges.length ? (
+        <LottiesGrid data={data} />
+      ) : (
+        <div>
+          <div
+            className="flex flex-col justify-center items-center text-center w-full "
+            style={{ minHeight: "500px" }}
           >
-            Back
-          </button>
-        )}
-        {data.pageData.offset + pageLimit < data.pageData.count && (
-          <button
-            type={"button"}
-            onClick={next}
-            className="bg-lf-teal text-white font-semibold hover:bg-lf-teal-dark rounded-lg  px-6 py-2 mx-0 outline-none focus:shadow-outline"
-          >
-            Next
-          </button>
-        )}
-      </div>
+            <Player
+              loop={true}
+              autoplay={true}
+              src={
+                "https://assets9.lottiefiles.com/packages/lf20_zxliqmhr.json"
+              }
+              style={{ height: "430px" }}
+              speed={1}
+            />
+            <Description
+              text={"Oops! We could not find any data for your request."}
+            />
+          </div>
+        </div>
+      )}
+      <Pagination
+        pageData={{
+          count: data.pageData.count,
+          offset: data.pageData.offset,
+          startCursor: data.page.pageInfo.startCursor,
+          endCursor: data.page.pageInfo.endCursor,
+        }}
+        route={"featured"}
+        searchQuery={query}
+      />
     </>
   );
 }
@@ -65,8 +60,8 @@ export async function getServerSideProps(props) {
   const apolloClient = initializeApollo();
   const data = await apolloClient.query({
     variables: {
-      first: props.query?.after || !props.query.before ? 6 : null,
-      last: props.query?.before ? 6 : null,
+      first: props.query?.after || !props.query.before ? DEFAULT_TAKE : null,
+      last: props.query?.before ? DEFAULT_TAKE : null,
       filter: props.query.q,
       sort: "recent",
       after: props.query?.after ? props.query.after : null,

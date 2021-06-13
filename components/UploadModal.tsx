@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import Button from "./Button";
+import LoadingButton from "./LoadingButton";
 import { useLazyQuery, useMutation } from "@apollo/client";
 import Notification from "./Notification";
 import { SaveLottieMutation } from "../graphql/saveLottieMutation";
@@ -21,9 +21,11 @@ export default function UploadModal() {
     visible: false,
   });
   const cancelButtonRef = useRef(null);
+  // GraphQL query for fetching the S3 signed URL
   const [signedUrl, { data }] = useLazyQuery<SignedURLData>(GetSignedUrlQuery, {
     fetchPolicy: "no-cache",
   });
+  // GraphQL mutation for saving the lottie to database
   const [saveLottie] = useMutation(SaveLottieMutation, {
     onCompleted: () => {
       setNotificationData({
@@ -56,16 +58,19 @@ export default function UploadModal() {
     setError(null);
   };
 
+  // function called on upload button
   const uploadLottie = async () => {
     if (!isFormValid) {
       setError("Please fill the fields first!");
     } else {
       setLoading(true);
       setError(null);
+      // S3 signed URL fetching
       signedUrl();
     }
   };
 
+  // PUT request to signed URL to upload file
   const uploadToS3 = async (file: File, signedUrl: string): Promise<void> => {
     await fetch(signedUrl, {
       method: "PUT",
@@ -73,6 +78,7 @@ export default function UploadModal() {
     });
   };
 
+  // Run mutation to save to database
   const saveToDatabase = async () => {
     await uploadToS3(formData.file, data.signedUrl.signedUrl);
     await saveLottie({
@@ -87,6 +93,7 @@ export default function UploadModal() {
     toggleModal(false);
   };
 
+  // on a new S3 URL fetch, save lottie to database
   useEffect(() => {
     if (data) {
       saveToDatabase();
@@ -235,13 +242,13 @@ export default function UploadModal() {
                   </div>
                 </div>
                 <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                  <Button
+                  <LoadingButton
                     type="primary"
                     text="Upload"
                     onClick={uploadLottie}
                     loading={loading}
                   />
-                  <Button
+                  <LoadingButton
                     type="secondary"
                     text="Cancel"
                     onClick={() => toggleModal(false)}

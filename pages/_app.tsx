@@ -25,6 +25,12 @@ function MyApp({ Component, pageProps }) {
           name="og:description"
           content={"Get latest new animations free on LottieFiles"}
         />
+        <meta
+          name="og:image"
+          content={
+            "https://static.lottiefiles.com/featured_image/oxrdoEtVEfPg40PmNBpBhSFmCye0x3i0uv8Dd6IY.png"
+          }
+        />
         <link rel="icon" href="/favicon.png" />
         <link href="/fonts/poppins.css" rel="stylesheet" />
       </Head>

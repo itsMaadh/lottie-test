@@ -16,6 +16,7 @@ export default function Lottie({ data }: LottieResponse) {
   const [speed, setSpeed] = useState(1);
   const [direction, setDirection] = useState(1);
 
+  // Copy LottieFile URL to clipboard
   const copy = async () => {
     await navigator.clipboard.writeText(data.lottie.assetUrl);
     setCopied(true);
@@ -24,6 +25,7 @@ export default function Lottie({ data }: LottieResponse) {
     }, 3000);
   };
 
+  // Update player speed. Max speed user can go is 2.5x
   const changePlayerSpeed = () => {
     const currentSpeed = lottiePlayerRef.current.state.instance.playSpeed;
     if (currentSpeed !== 2.5) {
@@ -35,18 +37,21 @@ export default function Lottie({ data }: LottieResponse) {
     }
   };
 
+  // Change color based on HEX value provided
   const changeColor = (e) => {
     const color = e.target?.value ? e.target.value : e;
     setBgColor(color);
     lottiePlayerRef.current.state.background = color;
   };
 
+  // Change direction of player. 1 for forward and -1 for backwards
   const changeDirection = (e) => {
     const updatedDirection = e.target.checked ? -1 : 1;
     setDirection(updatedDirection);
     lottiePlayerRef.current.setPlayerDirection(updatedDirection);
   };
 
+  // Create <a> tag to download LottieFile JSON
   const downloadLottie = () => {
     const dataStr =
       "data:text/json;charset=utf-8," +
@@ -59,6 +64,7 @@ export default function Lottie({ data }: LottieResponse) {
     element.click();
   };
 
+  // Event listener for space bar click. On click would pause/play
   useEffect(() => {
     document.addEventListener("keydown", (e) => {
       if (e.keyCode === 32) {
@@ -92,7 +98,7 @@ export default function Lottie({ data }: LottieResponse) {
           content={data.lottie.title + " | Free on LottieFiles"}
         />
       </Head>
-      <section className="pr-1 pl-1 pt-5 mx-auto bg-white container">
+      <div className="pr-1 pl-1 pt-5 mx-auto bg-white container">
         <div className="flex flex-col mx-auto w-full h-full">
           <div className="flex items-center">
             <div className="flex flex-col w-full h-full justify-between">
@@ -104,7 +110,7 @@ export default function Lottie({ data }: LottieResponse) {
                   loop={true}
                   autoplay={true}
                   src={data.lottie.assetUrl}
-                  style={{ height: "530px", minWidth: "100%" }}
+                  style={{ height: "530px" }}
                   speed={1}
                   ref={lottiePlayerRef}
                 >
@@ -227,6 +233,7 @@ export default function Lottie({ data }: LottieResponse) {
               </div>
             </div>
           </div>
+          {/*Download Lottie*/}
           <button
             onClick={downloadLottie}
             className="text-white duration-150 w-full hover:bg-lf-teal-dark rounded mt-3 bg-lf-teal p-3 font-semibold text-sm"
@@ -234,6 +241,7 @@ export default function Lottie({ data }: LottieResponse) {
             Download Lottie
           </button>
         </div>
+        {/*Shortcuts*/}
         <div className="hidden md:flex flex-row text-grey-dark text-xs pb-6">
           <div className="pr-6">Shortcuts:</div>
           <div className="pr-6 flex flex-row">
@@ -247,7 +255,7 @@ export default function Lottie({ data }: LottieResponse) {
             <span>Play/Pause</span>
           </div>
         </div>
-      </section>
+      </div>
     </>
   );
 }
