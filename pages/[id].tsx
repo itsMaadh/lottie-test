@@ -102,10 +102,7 @@ export default function Lottie({ data }: LottieResponse) {
         <div className="flex flex-col mx-auto w-full h-full">
           <div className="flex items-center">
             <div className="flex flex-col w-full h-full justify-between">
-              <div
-                className="flex justify-center items-center w-full "
-                style={{ minHeight: "600px" }}
-              >
+              <div>
                 <Player
                   loop={true}
                   autoplay={true}

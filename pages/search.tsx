@@ -16,7 +16,7 @@ interface ILottieResponse extends LottiesResponse {
 export default function search({ data, query }: ILottieResponse) {
   return (
     <>
-      <div className="py-6">
+      <div className="py-4">
         <Title text={"Search results for '" + query + "'"} />
       </div>
       {data.page.edges.length ? (
@@ -49,7 +49,7 @@ export default function search({ data, query }: ILottieResponse) {
           startCursor: data.page.pageInfo.startCursor,
           endCursor: data.page.pageInfo.endCursor,
         }}
-        route={"featured"}
+        route={"search"}
         searchQuery={query}
       />
     </>

@@ -15,17 +15,13 @@ export default function LottieTile({ id, title, assetUrl, createdAt }: Props) {
       <div className="trans trans-slow shadow-md hover:shadow-xl rounded">
         <Link href={"/" + id}>
           <a title={title}>
-            <div className="block rounded-t-lg border-b border-gray-100 pt-1 pb-0 relative">
-              <div className="flex flex-col w-full h-full justify-between">
-                <div className="flex justify-center items-center h-72">
-                  <Player
-                    src={assetUrl}
-                    loop
-                    autoplay={true}
-                    style={{ height: "260px" }}
-                  />
-                </div>
-              </div>
+            <div className="block rounded-t-lg border-b border-grey-lighter pt-1 pb-0 relative">
+              <Player
+                src={assetUrl}
+                loop
+                autoplay={true}
+                style={{ height: "270px" }}
+              />
             </div>
             <div className="p-4 items-center">
               <p className="tracking-wide font-medium">{title}</p>

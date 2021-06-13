@@ -10,7 +10,7 @@ import Pagination from "../components/Pagination";
 export default function featured({ data }: LottiesResponse) {
   return (
     <>
-      <div className="py-6">
+      <div className="py-4">
         <Title
           text={
             "Your access to the world’s largest collection of free-to-use animations"

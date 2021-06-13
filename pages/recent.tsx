@@ -10,7 +10,7 @@ import Pagination from "../components/Pagination";
 export default function recent({ data }: LottiesResponse) {
   return (
     <>
-      <div className="py-6">
+      <div className="py-4">
         <Title
           text={"The world’s largest source of freely-usable animations"}
         />
@@ -28,7 +28,7 @@ export default function recent({ data }: LottiesResponse) {
           startCursor: data.page.pageInfo.startCursor,
           endCursor: data.page.pageInfo.endCursor,
         }}
-        route={"featured"}
+        route={"recent"}
         searchQuery={""}
       />
     </>

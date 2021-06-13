@@ -25,6 +25,7 @@ function MyApp({ Component, pageProps }) {
           name="og:description"
           content={"Get latest new animations free on LottieFiles"}
         />
+        <meta property="og:image:type" content="image/png" />
         <meta
           name="og:image"
           content={
